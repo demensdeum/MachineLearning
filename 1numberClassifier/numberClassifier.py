@@ -38,8 +38,6 @@ def classifiedAsString(classifiedAs):
     
     elif classifiedAs == 2:
         return "Negative"
-    
-maximalClassesCount = 3
 
 def trainDatasetFunction():
     
@@ -67,13 +65,15 @@ def inputDatasetFunction():
     
 def main():
     
-    print("Tensorflow Positive-Negative-Zero numbers classifier test by demensdeum 2017 (demensdeum@gmail.com)")
+    print("TensorFlow Positive-Negative-Zero numbers classifier test by demensdeum 2017 (demensdeum@gmail.com)")
     
-    inputDataset = inputDatasetFunction()
+    maximalClassesCount = len(set(trainDatasetFunction()[1])) + 1
     
     numberFeature = tensorflow.feature_column.numeric_column("number")
     classifier = tensorflow.estimator.DNNClassifier(feature_columns = [numberFeature], hidden_units = [10, 20, 10], n_classes = maximalClassesCount)
     generator = classifier.train(input_fn = trainDatasetFunction, steps = 1000).predict(input_fn = inputDatasetFunction)
+    
+    inputDataset = inputDatasetFunction()
     
     results = list(itertools.islice(generator, len(inputDatasetFunction()["number"])))
     
