@@ -1,9 +1,45 @@
 import tensorflow
 import itertools
 import random
-from classifiedNumber import ClassifiedNumber
-from classifiedNumber import classifiedAsString
+
 from time import time
+
+class ClassifiedNumber:
+    
+    __number = 0
+    __classifiedAs = 3
+    
+    def __init__(self, number):
+        
+        self.__number = number
+        
+        if number == 0:
+            self.__classifiedAs = 0 # zero
+            
+        elif number > 0:
+            self.__classifiedAs = 1 # positive
+            
+        elif number < 0:
+            self.__classifiedAs = 2 # negative
+            
+    def number(self):
+        return self.__number
+    
+    def classifiedAs(self):
+        return self.__classifiedAs
+    
+def classifiedAsString(classifiedAs):
+    
+    if classifiedAs == 0:
+        return "Zero"
+    
+    elif classifiedAs == 1:
+        return "Positive"
+    
+    elif classifiedAs == 2:
+        return "Negative"
+    
+maximalClassesCount = 3
 
 def trainDatasetFunction():
     
@@ -36,7 +72,7 @@ def main():
     inputDataset = inputDatasetFunction()
     
     numberFeature = tensorflow.feature_column.numeric_column("number")
-    classifier = tensorflow.estimator.DNNClassifier(feature_columns = [numberFeature], hidden_units = [10, 20, 10], n_classes = 4)
+    classifier = tensorflow.estimator.DNNClassifier(feature_columns = [numberFeature], hidden_units = [10, 20, 10], n_classes = maximalClassesCount)
     generator = classifier.train(input_fn = trainDatasetFunction, steps = 1000).predict(input_fn = inputDatasetFunction)
     
     results = list(itertools.islice(generator, len(inputDatasetFunction()["number"])))
