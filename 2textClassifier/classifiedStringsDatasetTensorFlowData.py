@@ -36,10 +36,7 @@ class ClassifiedStringsDatasetTensorFlowData:
             
             for x in range(0, len(string)):
 
-                character = string[x:x+1]
-
-                print(character)
-               
+                character = string[x:x+1]               
                 grid[y][x] = character
 
         # populate features

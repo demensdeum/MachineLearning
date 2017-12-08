@@ -26,8 +26,8 @@ def main():
     trainDataset = TrainDataset()
     trainDatasetData = trainDataset.trainDatasetData()
 
-    classifier = tensorflow.estimator.DNNClassifier(feature_columns = trainDatasetData.feature_columns(), hidden_units = [1024, 512, 256], n_classes = trainDatasetData.n_classes())
-    classifier.train(input_fn = trainDataset.trainDatasetFunction, steps = 100)
+    classifier = tensorflow.estimator.DNNClassifier(feature_columns = trainDatasetData.feature_columns(), model_dir=".", hidden_units = [512, 256, 128], n_classes = trainDatasetData.n_classes())
+    classifier.train(input_fn = trainDataset.trainDatasetFunction, steps = 200000)
     
     while True:
     
