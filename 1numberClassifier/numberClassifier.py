@@ -6,9 +6,6 @@ from time import time
 
 class ClassifiedNumber:
     
-    __number = 0
-    __classifiedAs = 3
-    
     def __init__(self, number):
         
         self.__number = number
