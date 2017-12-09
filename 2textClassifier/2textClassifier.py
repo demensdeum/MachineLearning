@@ -3,6 +3,9 @@ import itertools
 from trainDataset import TrainDataset
 from classifiedStringsDatasetTensorFlowData import ClassifiedStringsDatasetTensorFlowData
     
+import logging
+logging.getLogger().setLevel(logging.INFO)
+    
 def inputDatasetFunction():
     
     global trainDatasetData
@@ -27,13 +30,15 @@ def main():
     trainDataset = TrainDataset()
     trainDatasetData = trainDataset.trainDatasetData()
 
-    classifier = tensorflow.estimator.DNNClassifier(feature_columns = trainDatasetData.feature_columns(), model_dir=".", hidden_units = [512, 256, 128], n_classes = trainDatasetData.n_classes())
+    classifier = tensorflow.estimator.DNNClassifier(feature_columns = trainDatasetData.feature_columns(), model_dir="model", hidden_units = [128, 128, 128, 128, 128, 128], n_classes = trainDatasetData.n_classes())
     
     state = input("train/classify? ")
     
     if state == "train":
-        print("Endless train mode, CTRL+C for exit")
-        classifier.train(input_fn = trainDataset.trainDatasetFunction)
+        print("Endless train mode, every 4000 steps will be saved. CTRL+C to exit")
+        
+        while True:
+            classifier.train(input_fn = trainDataset.trainDatasetFunction, steps = 4000) # to save every 4000 steps
 	
     elif state == "classify":
         print("Text classify mode, empty text input to exit")
@@ -54,7 +59,7 @@ def main():
             print("Input text is too long")
             continue
     
-        generator = classifier.predict(input_fn = inputDatasetFunction)
+        generator = classifier.train(input_fn = trainDataset.trainDatasetFunction, steps = 1).predict(input_fn = inputDatasetFunction)
     
         results = list(itertools.islice(generator, 1))
 
