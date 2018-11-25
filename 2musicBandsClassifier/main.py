@@ -25,7 +25,7 @@ def main():
     
     inputString = "metallica"    
     
-    print("TensorFlow text classifier by demensdeum 2017 (demensdeum@gmail.com)")
+    print("TensorFlow music bands classifier by demensdeum 2017 (demensdeum@gmail.com)")
     
     trainDataset = TrainDataset()
     trainDatasetData = trainDataset.trainDatasetData()
