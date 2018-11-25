@@ -4,19 +4,19 @@ from os import path
 print("Textgenrnn quotes text generator by demensdeum 2018 (demensdeum@gmail.com)")
 
 state = input("train/generate? ")
-model_filename = "textgenrnn_weights.hdf5"
+
+weights_filename = "textgenrnn_weights.hdf5"
 vocab_filename = "textgenrnn_vocab.json"
 config_filename = "textgenrnn_config.json"
 
 default_dataset_filename = "dataset_quotes_ru.txt"
 
 if state == "train":
-
     reset_model = False
 
     train_state = "reset"
     
-    if path.exists(model_filename):
+    if path.exists(weights_filename):
         train_state = input("reset/resume? ")
     
     if train_state == "reset":
@@ -25,7 +25,7 @@ if state == "train":
         
     elif train_state == "resume":
         reset_model = False
-        textgen = textgenrnn(model_filename)
+        textgen = textgenrnn(weights_filename)
 
     else:
         print("Write reset or result... Exit")
@@ -41,7 +41,11 @@ if state == "train":
         textgen.train_from_file(dataset_file, num_epochs=4, new_model = reset_model)      
     
 elif state == "generate":
-    textgen = textgenrnn(weights_path = model_filename, vocab_path = vocab_filename,
+    if path.exists(weights_filename) ==  False:
+    	print("There is no weights to generate, train first... Exit")
+    	exit(3)
+
+    textgen = textgenrnn(weights_path = weights_filename, vocab_path = vocab_filename,
              config_path = config_filename)
     textgen.generate()
     
